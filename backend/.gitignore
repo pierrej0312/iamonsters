@@ -48,4 +48,5 @@ target/
 HELP.md
 
 #ressources
-!**/src/main/resources/
+!**/src/main/resources/*
+src/main/resources/*
