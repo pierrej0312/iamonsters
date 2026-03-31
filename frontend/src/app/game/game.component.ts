@@ -17,8 +17,6 @@ export class GameComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     const config: Phaser.Types.Core.GameConfig = {
       type: Phaser.AUTO,
-      width: '100%',   // 30 tuiles × 16px
-      height: '100%',  // 20 tuiles × 16px
       parent: 'game-container', // l'id de ta div dans le HTML
       scene: [GameScene],
       pixelArt: true, // important pour les tilesets pixel art, évite le flou
@@ -28,9 +26,9 @@ export class GameComponent implements OnInit, OnDestroy {
       },
       scale: {
         mode: Phaser.Scale.RESIZE,
-        width: '100%',
-        height: '100%',
-        autoCenter: Phaser.Scale.CENTER_BOTH
+        autoCenter: Phaser.Scale.CENTER_BOTH,
+        width: 100,
+        height: 100
       }
     };
 
