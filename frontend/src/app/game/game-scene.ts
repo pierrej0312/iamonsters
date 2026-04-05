@@ -56,7 +56,17 @@ export default class GameScene extends Phaser.Scene {
     // Setup Joueur (Position Tile 9,11)
     this.player = this.add.rectangle(9.5 * TILE_SIZE, 11.5 * TILE_SIZE, 14, 14, 0xff0000).setDepth(50);
 
-    this.cameras.main.startFollow(this.player).setZoom(2).setBounds(0, 0, this.map.widthInPixels, this.map.heightInPixels);
+    this.cameras.main
+      .startFollow(this.player)
+      .setBounds(0, 0, this.map.widthInPixels, this.map.heightInPixels);
+
+    this.applyResponsiveZoom();
+
+    this.scale.on('resize', (gameSize: Phaser.Structs.Size) => {
+      this.cameras.main.setViewport(0, 0, gameSize.width, gameSize.height);
+      this.applyResponsiveZoom();
+    });
+
     this.cursors = this.input.keyboard!.createCursorKeys();
   }
 
@@ -124,5 +134,22 @@ export default class GameScene extends Phaser.Scene {
     });
 
     return !blocked;
+  }
+  private applyResponsiveZoom() {
+    const visibleWidth = this.scale.width;
+    const visibleHeight = this.scale.height;
+
+    const targetTilesWide = 20;
+    const targetTilesHigh = 12;
+
+    const zoomX = visibleWidth / (targetTilesWide * TILE_SIZE);
+    const zoomY = visibleHeight / (targetTilesHigh * TILE_SIZE);
+
+    let zoom = Math.min(zoomX, zoomY);
+
+    zoom = Phaser.Math.Clamp(zoom, 1.5, 4);
+    zoom = Math.floor(zoom * 2) / 2;
+
+    this.cameras.main.setZoom(zoom);
   }
 }
