@@ -1,7 +1,7 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import Phaser from 'phaser';
 import GameScene from './game-scene'; // ton fichier de scène Phaser
-import { Battle } from './battle/battle';
+import {Battle} from './battle/battle';
 
 @Component({
   selector: 'app-game',
@@ -17,9 +17,9 @@ export class GameComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     const config: Phaser.Types.Core.GameConfig = {
       type: Phaser.AUTO,
-      parent: 'game-container', // l'id de ta div dans le HTML
+      parent: 'game-container', // l'id de la div dans le HTML
       scene: [GameScene],
-      pixelArt: true, // important pour les tilesets pixel art, évite le flou
+      pixelArt: true,
       physics: {
         default: 'arcade',
         arcade: {debug: false}

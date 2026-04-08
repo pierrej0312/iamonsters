@@ -16,45 +16,36 @@ export default class GameScene extends Phaser.Scene {
 
   preload() {
     this.load.tilemapTiledJSON("map", "assets/map/map.json");
-    this.load.image("nature", "assets/map/flurmimons_tileset___nature_by_flurmimon_d9leui9.png");
+    this.load.image("free_pixel_16px", "assets/map/free_pixel_16_woods.png");
   }
 
   create() {
     this.map = this.make.tilemap({key: "map"});
-    const tileset = this.map.addTilesetImage("nature", "nature")!;
+    const tileset = this.map.addTilesetImage("free_pixel_16px", "free_pixel_16px")!;
 
-    // Création auto des layers (on boucle sur les noms au lieu de répéter 6 fois le code)
-    ["mer", "sol1", "sol sureleve", "arbres", "escaliers", "rochers"].forEach(name => {
+    ["mer", "mer_vagues", "sol1", "deco_sol", "deco_sol_1.5", "deco_sol_2", "deco_sol_3", "sol sureleve", "sol_sureleve_deco", "arbres", "arbres2"].forEach(name => {
       const layer = this.map.createLayer(name, tileset, 0, 0);
       if (name === "arbres") layer?.setDepth(100);
+      if (name === "arbres2") layer?.setDepth(101);
     });
 
-    // Récupération ET affichage des dresseurs
+    // Récupération ET affichage des dresseurs (une seule fois)
     const dresseurLayer = this.map.getObjectLayer("dresseurs");
-    if (dresseurLayer) {
-      this.trainers = dresseurLayer.objects.map(obj => {
-        const tx = Math.floor(obj.x! / TILE_SIZE);
-        const ty = Math.floor((obj.y! - (obj.height || 0)) / TILE_SIZE);
+    this.trainers = dresseurLayer?.objects.map(obj => {
+      const tx = Math.floor(obj.x! / TILE_SIZE);
+      const ty = Math.floor((obj.y! - (obj.height || 0)) / TILE_SIZE);
 
-        // ICI : On rajoute le visuel (le rectangle jaune)
-        this.add.rectangle(
-          (tx + 0.5) * TILE_SIZE,
-          (ty + 0.5) * TILE_SIZE,
-          TILE_SIZE, TILE_SIZE, 0xffff00
-        ).setDepth(25);
+      this.add.rectangle(
+        (tx + 0.5) * TILE_SIZE,
+        (ty + 0.5) * TILE_SIZE,
+        TILE_SIZE, TILE_SIZE, 0xffff00
+      ).setDepth(25);
 
-        return {x: tx, y: ty};
-      });
-    }
-
-    // Récupération simplifiée des dresseurs
-    this.trainers = this.map.getObjectLayer("dresseurs")?.objects.map(obj => ({
-      x: Math.floor(obj.x! / TILE_SIZE),
-      y: Math.floor((obj.y! - (obj.height || 0)) / TILE_SIZE)
-    })) || [];
+      return {x: tx, y: ty};
+    }) || [];
 
     // Setup Joueur (Position Tile 9,11)
-    this.player = this.add.rectangle(9.5 * TILE_SIZE, 11.5 * TILE_SIZE, 14, 14, 0xff0000).setDepth(50);
+    this.player = this.add.rectangle(7.5 * TILE_SIZE, 13.5 * TILE_SIZE, 14, 14, 0xff0000).setDepth(50);
 
     this.cameras.main
       .startFollow(this.player)
@@ -113,13 +104,13 @@ export default class GameScene extends Phaser.Scene {
     // 1. Limites de map
     if (tx < 0 || tx >= this.map.width || ty < 0 || ty >= this.map.height) return false;
 
-    // 2. VÉRIFICATION D'EXCEPTION (Si on est sur une zone spéciale, on passe direct !)
+    // 2. Vérification exception (calcul Y uniforme avec - height)
     const exceptionLayer = this.map.getObjectLayer("exceptionCollision");
     const isException = exceptionLayer?.objects.some(obj =>
       Math.floor(obj.x! / TILE_SIZE) === tx &&
-      Math.floor(obj.y! / TILE_SIZE) === ty
+      Math.floor((obj.y! - (obj.height || 0)) / TILE_SIZE) === ty
     );
-    if (isException) return true; // On autorise le passage immédiatement
+    if (isException) return true;
 
     // 3. Dresseurs
     if (this.trainers.some(t => t.x === tx && t.y === ty)) return false;
@@ -127,6 +118,7 @@ export default class GameScene extends Phaser.Scene {
     // 4. Tuiles classiques (murs, etc.)
     let blocked = false;
     this.map.layers.forEach(l => {
+      if (!l.tilemapLayer) return;
       const tile = l.tilemapLayer.getTileAt(tx, ty);
       const col = tile?.properties?.collisionType;
       if (col === "full") blocked = true;
@@ -135,6 +127,7 @@ export default class GameScene extends Phaser.Scene {
 
     return !blocked;
   }
+
   private applyResponsiveZoom() {
     const visibleWidth = this.scale.width;
     const visibleHeight = this.scale.height;
