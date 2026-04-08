@@ -17,9 +17,9 @@ export class GameComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     const config: Phaser.Types.Core.GameConfig = {
       type: Phaser.AUTO,
-      parent: 'game-container', // l'id de ta div dans le HTML
+      parent: 'game-container', // l'id de la div dans le HTML
       scene: [GameScene],
-      pixelArt: true, // important pour les tilesets pixel art, évite le flou
+      pixelArt: true,
       physics: {
         default: 'arcade',
         arcade: {debug: false}

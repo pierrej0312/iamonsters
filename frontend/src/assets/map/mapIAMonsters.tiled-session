@@ -1,23 +1,27 @@
 {
-    "activeFile": "map.tmx",
+    "activeFile": "map.json",
     "expandedProjectPaths": [
         "."
     ],
     "file.lastUsedOpenFilter": "Tous les Fichiers (*)",
     "fileStates": {
         "": {
-            "scaleInEditor": 1
+            "scaleInDock": 1,
+            "scaleInEditor": 2
         },
         "assets/map/nature.tsx": {
             "scaleInDock": 1
         },
         "map.json": {
             "scale": 1.5635416666666666,
-            "selectedLayer": 6,
+            "selectedLayer": -1,
             "viewCenter": {
-                "x": 239.84010659560292,
-                "y": 159.8934043970686
+                "x": 240.15989340439705,
+                "y": 159.5736175882745
             }
+        },
+        "map.json#free_pixel_16px": {
+            "scaleInDock": 2
         },
         "map.json#nature": {
             "scaleInDock": 1
@@ -39,7 +43,8 @@
             }
         },
         "map.tmx#nature": {
-            "scaleInDock": 1
+            "scaleInDock": 1,
+            "scaleInEditor": 1
         },
         "nature.tsx": {
             "scaleInDock": 1,
@@ -51,11 +56,11 @@
         }
     },
     "last.externalTilesetPath": "C:/Users/Max/Documents/MEGA/Projets/iamonsters-1.0-SNAPSHOT/frontend/src/assets/map",
-    "last.imagePath": "C:/Users/Max/Downloads",
+    "last.imagePath": "C:/Users/Max/Documents/MEGA/Projets/iamonsters-1.0-SNAPSHOT/frontend/src/assets/map",
     "map.lastUsedFormat": "json",
     "openFiles": [
         "map.json",
-        "map.tmx"
+        "map.json"
     ],
     "project": "mapIAMonsters.tiled-project",
     "property.type": "string",
@@ -67,6 +72,7 @@
         "outside.tsx"
     ],
     "textEdit.monospace": true,
+    "tileset.embedInMap": true,
     "tileset.lastUsedFilter": "Fichiers de jeu de tuiles Tiled (*.tsx *.xml)",
     "tileset.lastUsedFormat": "tsx",
     "tileset.tileSize": {
